@@ -1,0 +1,34 @@
+<style>
+  .auth-wrapper{
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .auth-wrapper .sign-form{
+    max-width: 350px;
+    width: 100%;
+    padding: 0 20px;
+  }
+
+  .auth-wrapper h1{margin-bottom: 20px;}
+</style>
+
+<div class="row auth-wrapper">
+  <div class="sign-form">
+    <h1>Sign In</h1>
+
+    <%= formFor(user, {action: loginPath(), method: "POST"}) { %>
+      <%= f.InputTag("Email") %>
+      <%= f.InputTag("Password", {type: "password"}) %>
+      <div class="actions text-center">
+        <button class="btn btn-success">Sign In!</button>
+        <%= linkTo(passwordResetPath(), {class: "btn btn-info"}) { %>Forgot Password<% } %>
+      </div>
+    <% } %>
+  </div>
+  <div class="col-12 offset-11 mt-5">
+    <%= linkTo(newUsersPath()) { %>Register <% } %>
+  </div>
+</div>

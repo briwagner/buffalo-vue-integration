@@ -1,0 +1,9 @@
+<h1>Vue app</h1>
+
+<div id="eventForm">event form is here</div>
+
+<script>
+  let eventList = <%= toJSON(events) %>
+</script>
+
+<%= javascriptTag("eventForm.js") %>

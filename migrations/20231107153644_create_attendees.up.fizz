@@ -1,0 +1,23 @@
+create_table("guests") {
+	t.Column("id", "uuid", {primary: true})
+  t.Column("email", "string", {})
+  t.Column("full_name", "string", {})
+	t.Timestamps()
+}
+
+create_table("events") {
+	t.Column("id", "uuid", {primary: true})
+  t.Column("title", "string", {})
+  t.Column("desc", "string", {})
+  t.Column("event_date", "datetime", {})
+	t.Timestamps()
+}
+
+create_table("event_attendees") {
+	t.Column("id", "uuid", {primary: true})
+  t.Column("event_id", "uuid", {})
+  t.Column("guest_id", "uuid", {})
+  t.ForeignKey("event_id", {"events":["id"]})
+  t.ForeignKey("guest_id", {"guests":["id"]})
+	t.Timestamps()
+}

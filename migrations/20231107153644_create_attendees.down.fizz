@@ -1,0 +1,3 @@
+drop_table("guests")
+drop_table("events")
+drop_table("event_attendees")

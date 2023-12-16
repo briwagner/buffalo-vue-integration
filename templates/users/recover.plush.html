@@ -1,0 +1,31 @@
+<style>
+  .auth-wrapper {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .auth-wrapper .sign-form {
+    max-width: 350px;
+    width: 100%;
+    padding: 0 20px;
+  }
+
+  .auth-wrapper h1 {margin-bottom: 20px;}
+</style>
+
+<div class="auth-wrapper">
+  <div class="sign-form">
+    <h1>Recover</h1>
+
+    <%= formFor(req, {action: passwordResetPath(), method: "POST"}) { %>
+      <%= f.InputTag("Email") %>
+      <%= f.InputTag("Code", {label: "Recovery Code"}) %>
+      <%= f.InputTag("Password", {type: "password"}) %>
+      <%= f.InputTag("PasswordConfirmation", {type: "password"}) %>
+
+      <button class="btn btn-success">Update password</button>
+    <% } %>
+  </div>
+</div>

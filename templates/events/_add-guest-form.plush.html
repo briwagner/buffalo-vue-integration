@@ -1,0 +1,5 @@
+<%= form_for(guest, {action: eventAddGuestPath({id: event.ID})}) { %>
+  <%= f.InputTag("Email") %>
+  <%= f.InputTag("FullName") %>
+  <%= f.SubmitTag("Reserve a spot") %>
+<% } %>

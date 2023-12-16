@@ -1,0 +1,16 @@
+<h1>Create a new event</h1>
+
+<!-- We add step so any seconds are ok; default is 60. Other solution is to set the init seconds to :00 -->
+
+<%= form_for(event, {action: newEventsPath()}) { %>
+  <%= f.InputTag("Title") %>
+  <%= f.InputTag("Description") %>
+  <label for="Date">Event date</label>
+  <input type="datetime-local"
+         name="Date"
+         id="Date"
+         step="1"
+         min="<%= event.Date.Format(tFormat) %>"
+         value="<%= event.Date.Format(tFormat) %>">
+  <%= f.SubmitTag("Create") %>
+<% } %>

@@ -11,10 +11,10 @@ import (
 	"github.com/gobuffalo/buffalo"
 	"github.com/gobuffalo/buffalo-pop/v3/pop/popmw"
 	"github.com/gobuffalo/envy"
-	"github.com/gobuffalo/middleware/csrf"
 	"github.com/gobuffalo/middleware/forcessl"
 	"github.com/gobuffalo/middleware/i18n"
 	"github.com/gobuffalo/middleware/paramlogger"
+	csrf "github.com/gobuffalo/mw-csrf"
 	"github.com/unrolled/secure"
 )
 
@@ -59,13 +59,48 @@ func App() *buffalo.App {
 		app.Use(csrf.New)
 
 		// Wraps each request in a transaction.
-		//   c.Value("tx").(*pop.Connection)
-		// Remove to disable this.
 		app.Use(popmw.Transaction(models.DB))
 		// Setup and use translations:
 		app.Use(translations())
 
 		app.GET("/", HomeHandler)
+		app.GET("/events", EventsListHandler)
+		app.GET("/events/json", EventsListJSONHandler)
+		app.GET("/events/new", Authorize(EventNewHandler))
+		app.POST("/events/new", Authorize(EventCreateHandler))
+		app.GET("/events/{id}/add-guest", EventNewGuestHandler)
+		app.POST("/events/{id}/add-guest", EventAddGuestHandler)
+		app.GET("/events/{id}", EventDetailHandler)
+
+		app.GET("/app", AppHandler)
+		app.GET("/app-remote", AppRemoteHandler)
+		app.POST("/app/add-guest", AppFormHandler)
+
+		// AuthMiddleware
+		s := MockSender{}
+		app.Use(SetupRecoverySender(s))
+		app.Use(SetCurrentUser)
+		// app.Use(Authorize)
+
+		// Routes for Auth
+		auth := app.Group("/login")
+		auth.GET("/", AuthNew)
+		auth.POST("/", AuthCreate)
+		auth.DELETE("/", AuthDestroy)
+
+		// Password recovery
+		app.GET("/password_reset", PasswordResetForm)
+		app.POST("/password_reset", PasswordReset)
+		app.GET("/account_recovery", AccountRecoveryForm)
+		app.POST("/account_recovery", AccountRecovery)
+		// auth.Middleware.Skip(Authorize, AuthLanding, AuthNew, AuthCreate, PasswordResetForm, PasswordReset, AccountRecoveryForm, AccountRecovery)
+
+		// Routes for User registration
+		// app.GET("/user", UserPage) // this is behind auth. Shows current user.
+		users := app.Group("/users")
+		users.GET("/new", UsersNew)
+		users.POST("/", UsersCreate)
+		// users.Middleware.Remove(Authorize)
 
 		app.ServeFiles("/", http.FS(public.FS())) // serve files from the public directory
 	})

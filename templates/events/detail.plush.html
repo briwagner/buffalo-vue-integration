@@ -1,0 +1,19 @@
+<h1><%= event.Title %></h1>
+
+<p><%= event.Description%></p>
+
+<%= if (event.HasGuests()) { %>
+  <p>Guests</p>
+  <ul>
+    <%= for (g) in event.EventGuests { %>
+      <li><%= g.Email %> - <%= g.FullName %></li>
+    <% } %>
+  </ul>
+  <% } else { %>
+    <p>No guests</p>
+<% } %>
+
+<div class="jumbotron">
+  <h2>Reserve a guest</h2>
+  <%= partial("events/add-guest-form") %>
+</div>

@@ -4,7 +4,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta charset="utf-8">
     <title>Buffalo - Event Planner</title>
-<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.6.2/axios.min.js" integrity="sha512-b94Z6431JyXY14iSXwgzeZurHHRNkLt9d6bAHt7BZT38eqV+GyngIi/tVye4jBKPYQ2lBdRs0glww4fmpuLRwA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <%= stylesheetTag("buffalo.css") %>
     <%= stylesheetTag("application.css") %>
     <meta name="csrf-param" content="authenticity_token" />
@@ -12,12 +14,12 @@
     <link rel="icon" href="<%= assetPath("images/favicon.ico") %>">
   </head>
   <body>
+    <%= javascriptTag("application.js") %>
 
     <div class="container">
       <%= partial("flash.html") %>
       <%= yield %>
     </div>
 
-    <%= javascriptTag("application.js") %>
   </body>
 </html>
