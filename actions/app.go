@@ -65,6 +65,7 @@ func App() *buffalo.App {
 
 		app.GET("/", HomeHandler)
 		app.GET("/events", EventsListHandler)
+		app.GET("/events-remote", EventsRemoteHandler)
 		app.GET("/events/json", EventsListJSONHandler)
 		app.GET("/events/new", Authorize(EventNewHandler))
 		app.POST("/events/new", Authorize(EventCreateHandler))
@@ -73,7 +74,6 @@ func App() *buffalo.App {
 		app.GET("/events/{id}", EventDetailHandler)
 
 		app.GET("/app", AppHandler)
-		app.GET("/app-remote", AppRemoteHandler)
 		app.POST("/app/add-guest", AppFormHandler)
 
 		// AuthMiddleware
