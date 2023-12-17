@@ -7,9 +7,3 @@ development:
   user: "buffalo"
   password: "password"
 
-
-test:
-  url: {{envOr "TEST_DATABASE_URL" "postgres://postgres:postgres@127.0.0.1:5432/event_planner_test?sslmode=disable"}}
-
-production:
-  url: {{envOr "DATABASE_URL" "postgres://postgres:postgres@127.0.0.1:5432/event_planner_production?sslmode=disable"}}
