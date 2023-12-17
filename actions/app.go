@@ -66,7 +66,7 @@ func App() *buffalo.App {
 		app.GET("/", HomeHandler)
 		app.GET("/events", EventsListHandler)
 		app.GET("/events-remote", EventsRemoteHandler)
-		app.GET("/events/json", EventsListJSONHandler)
+		app.GET("/events/json", EventsListJSONHandler) // JSON route only to feed the Vue component
 		app.GET("/events/new", Authorize(EventNewHandler))
 		app.POST("/events/new", Authorize(EventCreateHandler))
 		app.GET("/events/{id}/add-guest", EventNewGuestHandler)

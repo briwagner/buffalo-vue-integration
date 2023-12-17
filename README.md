@@ -1,39 +1,44 @@
-# Welcome to Buffalo
+# Example app: Buffalo with VueJS integration
 
-Thank you for choosing Buffalo for your web development needs.
+This is an example Buffalo app that integrates with VueJS components. The examples are intended to show two different ways to combine Buffalo and Vue.
 
-## Database Setup
+These samples assume that Buffalo is managing all of the server-side operations. Both HTML pages and Javascript components are served by Buffalo, and the forms are handled by Buffalo.
 
-It looks like you chose to set up your application using a database! Fantastic!
+Another option is to use a separate server to host the JS components, which fetch and send data to the Buffalo endpoints. That involves a more sophisticated setup with multiple servers, which is outside the scope of this example. A few modifications would allow this project to be split up (i.e. combine the Vue components into a single project) and hosted from separate machines.
 
-The first thing you need to do is open up the "database.yml" file and edit it to use the correct usernames, passwords, hosts, etc... that are appropriate for your environment.
 
-You will also need to make sure that **you** start/install the database of your choice. Buffalo **won't** install and start it for you.
+## Javascript build step
 
-### Create Your Databases
+This app does not use a frontend build process, in order to simplify the examples. The main `application.plush.html` template includes the script imports for Vue and Axios. Individual components are included directly on the relevant page templates.
 
-Ok, so you've edited the "database.yml" file and started your database, now Buffalo can create the databases in that file for you:
+For a production application, a little extra work should make it possible to add a bundling and/or build-process pipeline to these samples.
 
-```console
-buffalo pop create -a
-```
+## Vue widgets
 
-## Starting the Application
+There are three Vue components shown here. Two of them read and display data. The third is a form component that submits data to the backend.
 
-Buffalo ships with a command that will watch your application and automatically rebuild the Go binary and any assets for you. To do that run the "buffalo dev" command:
+### 1. Search widget that reads page data
 
-```console
-buffalo dev
-```
+File: `public/assets/eventList.js` and `templates/events/all.plush.html`
 
-If you point your browser to [http://127.0.0.1:3000](http://127.0.0.1:3000) you should see a "Welcome to Buffalo!" page.
+Route: `/events`
 
-**Congratulations!** You now have your Buffalo application up and running.
+This is one of the simplest ways to combine a server-generated web page along with Javascript components. It does not require the creation of additional server routes that exist solely to deliver JSON data to a frontend component. Another advantage is that the page, along with its data payload, can be cached to help improve page speed and minimize database operations.
 
-## What Next?
+The trick here is to use the server to render JSON data onto the page, where it is not visible to the user. The JS component then loads that JSON -- similar to how it would make a JSON request -- and renders the relevant data.
 
-We recommend you heading over to [http://gobuffalo.io](http://gobuffalo.io) and reviewing all of the great documentation there.
+### 2. Search widget that loads
 
-Good luck!
+File: `public/assets/eventListRemote.js`
 
-[Powered by Buffalo](http://gobuffalo.io)
+Route: `/events-remote`
+
+Similar to #1, this sample loads data and provides a dynamic filter on the title field. Unlike the first, this one makes a call to the server to load the event list in the `mounted()` stage of the component.
+
+### 3. Form that makes a remote server request
+
+File: `public/assets/eventForm.js`
+
+Route: `/app`
+
+This form is a combination of both methods above. The server renders the event list to JSON and writes it to the page. The Vue component reads that data and generates a dynamic form. (Add frontend form validation and it'll do even more!) Finally, the user clicks submit, and Vue sends the form to the backend, showing the result of the operation on the page.
