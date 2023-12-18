@@ -29,7 +29,7 @@ CREATE TABLE `event_attendees` (
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `event_id` (`event_id`),
+  UNIQUE KEY `event_attendees_event_id_guest_id_idx` (`event_id`,`guest_id`),
   KEY `guest_id` (`guest_id`),
   CONSTRAINT `event_attendees_ibfk_1` FOREIGN KEY (`event_id`) REFERENCES `events` (`id`),
   CONSTRAINT `event_attendees_ibfk_2` FOREIGN KEY (`guest_id`) REFERENCES `guests` (`id`)
@@ -80,7 +80,6 @@ DROP TABLE IF EXISTS `schema_migration`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `schema_migration` (
   `version` varchar(14) NOT NULL,
-  PRIMARY KEY (`version`),
   UNIQUE KEY `schema_migration_version_idx` (`version`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -113,4 +112,4 @@ CREATE TABLE `users` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-12-13 12:10:32
+-- Dump completed on 2023-12-17 20:15:07

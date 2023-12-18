@@ -21,3 +21,5 @@ create_table("event_attendees") {
   t.ForeignKey("guest_id", {"guests":["id"]})
 	t.Timestamps()
 }
+
+add_index("event_attendees", ["event_id", "guest_id"], {unique: true})

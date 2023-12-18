@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"strings"
 	"time"
 
 	"github.com/gobuffalo/buffalo"
@@ -133,8 +134,6 @@ func EventAddGuestHandler(c buffalo.Context) error {
 		return c.Redirect(301, "/")
 	}
 
-	fmt.Printf("got event %s\n\n", event.Title)
-
 	// Find and validate guest.
 	guest := &models.Guest{}
 	err = c.Bind(guest)
@@ -168,15 +167,19 @@ func EventAddGuestHandler(c buffalo.Context) error {
 
 	err = tx.Create(res)
 	if err != nil {
+		if strings.Contains(err.Error(), "Duplicate entry") {
+			c.Flash().Add("warning", "A reservation already exists for that person.")
+			return c.Redirect(301, "/events/"+event.ID.String())
+		}
 		log.Printf("error making reservation %s", err)
 		return c.Redirect(301, "/")
 	}
 
-	log.Printf("reservation complete for event %s", event.ID.String())
+	c.Flash().Add("info", "Reservation complete for "+foundGuest.Email)
 	return c.Redirect(301, "/events/"+event.ID.String())
 }
 
-// AppHandler returns GET for app form.
+// AppHandler returns GET for Vue form.
 func AppHandler(c buffalo.Context) error {
 	tx := c.Value("tx").(*pop.Connection)
 	events := &models.Events{}
@@ -202,7 +205,7 @@ type AppForm struct {
 	Email    string    `form:"Email"`
 }
 
-// AppFormHandler responds to POST to add-guest for app form.
+// AppFormHandler responds to POST to add-guest for Vue form.
 func AppFormHandler(c buffalo.Context) error {
 	tx := c.Value("tx").(*pop.Connection)
 	req := &AppForm{}

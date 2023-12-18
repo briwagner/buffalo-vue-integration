@@ -6,6 +6,13 @@ These samples assume that Buffalo is managing all of the server-side operations.
 
 Another option is to use a separate server to host the JS components, which fetch and send data to the Buffalo endpoints. That involves a more sophisticated setup with multiple servers, which is outside the scope of this example. A few modifications would allow this project to be split up (i.e. combine the Vue components into a single project) and hosted from separate machines.
 
+## Event Planner app
+
+<em>What does this app do?</em>
+
+The app shows some basic CRUD patterns. Users can create an account with email and password. This uses a <a href="https://github.com/briwagner/buffalo-auth">forked version</a> of the Buffalo Auth plugin. Authenticated users can create Events. Any site visitor then can make reserve a spot at the event, using an email and name.
+
+See the homepage for a list of routes.
 
 ## Javascript build step
 
