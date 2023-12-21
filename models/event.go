@@ -78,8 +78,10 @@ func (e *Events) SearchTitle(tx *pop.Connection, s string) error {
 
 func (e Events) ToList() string {
 	var b strings.Builder
+	b.WriteString("<ul>")
 	for _, ev := range e {
 		b.WriteString(ev.ToListItem())
 	}
+	b.WriteString("</ul>")
 	return b.String()
 }
