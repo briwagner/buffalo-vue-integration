@@ -39,6 +39,10 @@ func (e Event) ToListItem() string {
 	return "<li><a href='/events/" + e.ID.String() + "'>" + e.Title + "</a> &mdash; " + e.EventDate() + "</li>"
 }
 
+func (e Event) ToGuestLink() string {
+	return "/events/" + e.ID.String() + "/add-guest"
+}
+
 // Events is not required by pop and may be deleted
 type Events []Event
 
