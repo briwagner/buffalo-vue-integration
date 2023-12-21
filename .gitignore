@@ -6,7 +6,6 @@ bin/
 tmp/
 node_modules/
 .sass-cache/
-public/assets/
 .vscode/
 .grifter/
 .env
