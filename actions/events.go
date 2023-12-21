@@ -33,7 +33,8 @@ func EventsListHandler(c buffalo.Context) error {
 		log.Print(err)
 		return c.Redirect(301, "/")
 	}
-	c.Set("events", string(data))
+	c.Set("eventData", string(data))
+	c.Set("events", events)
 	return c.Render(http.StatusOK, r.HTML("events/all"))
 }
 
@@ -258,4 +259,26 @@ func AppFormHandler(c buffalo.Context) error {
 // EventsRemoteHandler renders the Vue page that makes a remote request to load event list.
 func EventsRemoteHandler(c buffalo.Context) error {
 	return c.Render(http.StatusOK, r.HTML("events/list-remote"))
+}
+
+type EventSearchForm struct {
+	Title string `form:"search"`
+}
+
+func EventSearchHandler(c buffalo.Context) error {
+	search := EventSearchForm{}
+	err := c.Bind(&search)
+	if err != nil {
+		log.Printf("form bind error %s", err)
+		return c.Redirect(301, "/")
+	}
+
+	tx := c.Value("tx").(*pop.Connection)
+	events := &models.Events{}
+	err = events.SearchTitle(tx, search.Title)
+	if err != nil {
+		log.Printf("error in search %s", err)
+		return c.Redirect(301, "/")
+	}
+	return c.Render(http.StatusOK, r.String(events.ToList()))
 }

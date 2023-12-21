@@ -2,6 +2,7 @@ package models
 
 import (
 	"encoding/json"
+	"strings"
 	"time"
 
 	"github.com/gobuffalo/pop/v6"
@@ -30,6 +31,14 @@ func (e Event) HasGuests() bool {
 	return len(e.EventGuests) > 0
 }
 
+func (e Event) EventDate() string {
+	return e.Date.Format("Jan. 02 2006 3:04 PM MST")
+}
+
+func (e Event) ToListItem() string {
+	return "<li><a href='/events/" + e.ID.String() + "'>" + e.Title + "</a> &mdash; " + e.EventDate() + "</li>"
+}
+
 // Events is not required by pop and may be deleted
 type Events []Event
 
@@ -55,4 +64,22 @@ func (e *Event) ValidateCreate(tx *pop.Connection) (*validate.Errors, error) {
 // This method is not required and may be deleted.
 func (e *Event) ValidateUpdate(tx *pop.Connection) (*validate.Errors, error) {
 	return validate.NewErrors(), nil
+}
+
+func (e *Events) SearchTitle(tx *pop.Connection, s string) error {
+	// TODO do we have to concat the string like this?
+	s = s + "%"
+	err := tx.Where("title like ?", s).All(e)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (e Events) ToList() string {
+	var b strings.Builder
+	for _, ev := range e {
+		b.WriteString(ev.ToListItem())
+	}
+	return b.String()
 }

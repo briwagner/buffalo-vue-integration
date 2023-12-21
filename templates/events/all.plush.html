@@ -5,7 +5,14 @@
 <div id="eventList"></div>
 
 <script>
-  let eventList = <%= toJSON(events) %>
+  let eventList = <%= toJSON(eventData) %>
 </script>
 
 <%= javascriptTag("eventList.js") %>
+
+<p>Plain HTML list</p>
+<ul>
+  <%= for (ev) in events { %>
+    <%= raw(ev.ToListItem()) %>
+  <% } %>
+</ul>

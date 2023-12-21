@@ -1,7 +1,15 @@
-<h1>Vue app</h1>
+<h1>HTMX App</h1>
 
-<p>This list makes a remote call to load events, from the `eventListRemote.js' file.</p>
+<p>This page uses HTMX to fetch and send data.</p>
 
-<div id="eventListRemote"></div>
+<input class="form-control" type="search"
+       name="search"
+       placeholder="Begin typing to search by event title"
+       hx-post="/events/search"
+       hx-trigger="input changed delay:500ms, search"
+       hx-target="#eventListRemote"
+       hx-vals='{"authenticity_token": "<%= authenticity_token %>"}'>
 
-<%= javascriptTag("eventListRemote.js") %>
+<div>
+  <ul id="eventListRemote"> </ul>
+</div>
