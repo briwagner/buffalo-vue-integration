@@ -9,3 +9,12 @@
 </script>
 
 <%= javascriptTag("eventList.js") %>
+
+<div class="jumbotron mt-3">
+  <p>Buffalo html template</p>
+  <ul class="list-group">
+    <%= for (ev) in eventsGo { %>
+      <li class="list-group-item"><a href="<%= ev.ToLink() %>"><%= ev.Title %></a></li>
+    <% } %>
+  </ul>
+</div>

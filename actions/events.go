@@ -34,6 +34,7 @@ func EventsListHandler(c buffalo.Context) error {
 		return c.Redirect(301, "/")
 	}
 	c.Set("events", string(data))
+	c.Set("eventsGo", events)
 	return c.Render(http.StatusOK, r.HTML("events/all"))
 }
 

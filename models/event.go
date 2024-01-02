@@ -26,6 +26,10 @@ func (e Event) String() string {
 	return string(je)
 }
 
+func (e Event) ToLink() string {
+	return "/events/" + e.ID.String()
+}
+
 func (e Event) HasGuests() bool {
 	return len(e.EventGuests) > 0
 }

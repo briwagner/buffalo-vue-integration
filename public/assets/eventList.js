@@ -56,8 +56,8 @@ new Vue({
       <input id="title-filter" name="title-filter" v-model="titleSearch" type="text"></input>
     </form>
   </div>
-  <ul class="event-list">
-    <li v-for="ev in filteredEvents" class="event-list-item">
+  <ul class="event-list list-group">
+    <li v-for="ev in filteredEvents" class="event-list-item list-group-item">
       <p><a v-bind:href="ev.Link">{{ev.Title}}</a> &#8212; {{ev.EventDate}}</p>
     </li>
   </ul>
