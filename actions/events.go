@@ -27,6 +27,11 @@ func EventsListHandler(c buffalo.Context) error {
 		return c.Redirect(301, "/")
 	}
 
+	ct, _ := c.Value("contentType").(string)
+	if ct == "application/json" {
+		return c.Render(http.StatusOK, r.JSON(events))
+	}
+
 	// Marshal to JSON so the Vue app can read it.
 	data, err := json.Marshal(events)
 	if err != nil {

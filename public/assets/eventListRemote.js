@@ -23,7 +23,7 @@ new Vue({
   },
   methods: {
     async getEvents() {
-      const resp = fetch('/events/json/');
+      const resp = fetch('/events/', {headers: {'Content-Type': 'application/json'}});
       return (await resp).json();
     }
   },
