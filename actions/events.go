@@ -258,6 +258,16 @@ func AppFormHandler(c buffalo.Context) error {
 
 // EventsRemoteHandler renders the Vue page that makes a remote request to load event list.
 func EventsRemoteHandler(c buffalo.Context) error {
+	tx := c.Value("tx").(*pop.Connection)
+	events := models.Events{}
+
+	err := tx.All(&events)
+	if err != nil {
+		log.Print(err)
+		return c.Redirect(301, "/")
+	}
+
+	c.Set("events", events)
 	return c.Render(http.StatusOK, r.HTML("events/list-remote"))
 }
 
