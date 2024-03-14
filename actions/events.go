@@ -176,8 +176,21 @@ func EventAddGuestHandler(c buffalo.Context) error {
 		return c.Redirect(301, "/")
 	}
 
-	// For HTMX, we return a simple string to render in-place where the form was.
-	return c.Render(http.StatusOK, r.String("<div class='alert alert-info'>Reservation complete for "+foundGuest.Email+"</div>"))
+	htmx := false
+	c.Request().ParseForm()
+	for k, _ := range c.Request().Form {
+		if k == "htmx" {
+			htmx = true
+			break
+		}
+	}
+	if htmx {
+		// For HTMX, we return a simple string to render in-place where the form was.
+		return c.Render(http.StatusOK, r.String("<div class='alert alert-info'>Reservation complete for "+foundGuest.Email+"</div>"))
+	}
+
+	c.Flash().Add("info", "Reservation complete for "+foundGuest.Email)
+	return c.Redirect(301, "/events/"+event.ID.String())
 }
 
 // AppHandler returns GET for Vue form.
